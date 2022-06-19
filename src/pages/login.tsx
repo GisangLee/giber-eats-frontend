@@ -11,9 +11,20 @@ export const Login = () => {
     const { register, getValues, setError, formState: { errors }, handleSubmit } = useForm<ILoginForm>();
     
     const validateInputValue = (email:string, password:string) => {
+
+        if (!email) {
+
+        }
+        
         const emailRegex= /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
 
-        emailRegex.test(email);
+        if (emailRegex.test(email)) {
+
+        }
+
+        if (password.length < 9) {
+
+        }
     };
 
     const onSubmit: SubmitHandler<ILoginForm> = (data:object) => {
