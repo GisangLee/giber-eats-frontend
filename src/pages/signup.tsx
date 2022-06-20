@@ -106,7 +106,7 @@ export const CreateAccount = () => {
 
                     </form>
                     <div>
-                        이미 계정이 있으신가요? <Link to="/login" className=' hover:underline text-lime-600'>로그인</Link>을 진행해 주세요.
+                        이미 계정이 있으신가요? <Link to="/" className=' hover:underline text-lime-600'>로그인</Link>을 진행해 주세요.
                     </div>
                 </div>
             </div>
