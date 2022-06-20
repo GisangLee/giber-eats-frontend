@@ -45,7 +45,7 @@ export const CreateAccount = () => {
         if (ok) {
             // redirect to login page
             alert("회원가입이 완료되었습니다.");
-            navigate("/login");
+            navigate("/");
 
         }else {
             if (error) {
