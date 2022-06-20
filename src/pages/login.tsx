@@ -1,39 +1,63 @@
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { ApolloError, gql, useMutation } from '@apollo/client';
+import { loginMutation, loginMutationVariables } from '../__generated__/loginMutation';
+import { FormError } from '../components/form-erorr';
+
+const LOGIN_MUTATION = gql`
+    mutation loginMutation($loginInput: LoginInput!) {
+        login(input: $loginInput){
+            ok
+            error
+            token
+        }
+    }
+`;
 
 interface ILoginForm {
-    email?: string;
-    password?: string;
+    email: string;
+    password: string;
 }
+
 
 export const Login = () => {
 
-    const { register, getValues, setError, formState: { errors }, handleSubmit } = useForm<ILoginForm>();
-    
-    const validateInputValue = (email:string, password:string) => {
+    const { register, getValues, formState: { errors }, handleSubmit, watch } = useForm<ILoginForm>();
+    const [ accountsError, setAccountsError ] = useState("");
 
-        if (!email) {
+    const onCompleted = (data: loginMutation) => {
+        const { login: { ok, error, token } } = data;
 
-        }
-        
-        const emailRegex= /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
-
-        if (emailRegex.test(email)) {
-
-        }
-
-        if (password.length < 9) {
-
+        if (ok) {
+            console.log(token);
+        }else {
+            if (error) {
+                setAccountsError(error);
+            }
         }
     };
 
-    const onSubmit: SubmitHandler<ILoginForm> = (data:object) => {
-        console.log(data);
+    const onError = (error:ApolloError) => {
         
-        //const { email, password } = data;
-        //validateInputValue(email, password);
-        console.log("errors", errors.email);
-        console.log("errors", errors.password);
+    };
+
+    const [loginMutation, { loading, error, data: loginMutationResult }] = useMutation<
+        loginMutation, loginMutationVariables
+    >(LOGIN_MUTATION, {
+        onCompleted,
+        onError,
+    });
+    
+    const onSubmit: SubmitHandler<ILoginForm> = data => {
+        if (!loading) {
+            const { email, password } = getValues();
+
+            loginMutation({
+                variables: {
+                    loginInput: { email, password },
+                },
+            });
+        }
     };
 
     return (
@@ -44,12 +68,17 @@ export const Login = () => {
                     <h3 className="text-3xl text-gray-800">로그인</h3>
 
                     <form onSubmit={handleSubmit(onSubmit)} className='grid gap-3 mt-5 px-5'>
-                        <input {...register("email", { required: true, pattern: /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/}) } name="email" required placeholder='이메일' className="input mb-3" type="email"/>
-                        { errors.email && <span className='font-medium text-red-500'>{ errors.email.message }</span> }
+                        { errors.email && errors.email.type === "required" && <FormError errorMessage={ errors.email.message }/>}
+                        { errors.email && errors.email.type === "pattern" && <FormError errorMessage="이메일 형식이 아닙니다."/>}
+                        <input { ...register("email", { required: "필수항목입니다.", pattern: /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/ } ) } name="email" placeholder='이메일' className="input mb-3"/>
 
-                        <input {...register("password", { required: true, minLength: { value: 8, message: "최소 8자리 이상이어야 합니다."} }) } name="password" required placeholder='비밀번호' className="input" type="password"/>
-                        { errors.password && <span className='font-medium text-red-500'>{ errors.password.message }</span> }
-                        <button className="btn mt-3">로그인</button>
+                        <input { ...register("password", { required: "필수항목입니다.", minLength: { value:8, message: "최소 8자리 이상이어야 합니다."}} )} name="password" placeholder='비밀번호' className="input" type="password"/>
+                        { errors.password && errors.password.type === "required" && <FormError errorMessage={ errors.password.message }/>}
+                        { errors.password && errors.password.type === "minLength" && <FormError errorMessage={ errors.password.message }/>}
+
+                        <button className="btn mt-3">{ loading ? "Loading...." : "로그인"}</button>
+                        { accountsError && <FormError errorMessage={ accountsError }/>}
+                        
                     </form>
 
                 </div>
