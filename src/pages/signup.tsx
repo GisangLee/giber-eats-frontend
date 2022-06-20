@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { gql, useMutation } from '@apollo/client';
 import { FormError } from '../components/form-erorr';
@@ -44,6 +44,7 @@ export const CreateAccount = () => {
 
         if (ok) {
             // redirect to login page
+            alert("회원가입이 완료되었습니다.");
             navigate("/login");
 
         }else {

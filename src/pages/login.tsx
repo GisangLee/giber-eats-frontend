@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { ApolloError, gql, useMutation } from '@apollo/client';
+import { isLoggedInVar, authToken } from '../apollo';
 import { loginMutation, loginMutationVariables } from '../__generated__/loginMutation';
 import { FormError } from '../components/form-erorr';
 import giberLogo from "../images/logo.svg";
 import { Button } from '../components/button';
-import { isLoggedInVar } from '../apollo';
+import { LOCALSTORAGE_TOKEN } from '../constants';
 
 const LOGIN_MUTATION = gql`
     mutation loginMutation($loginInput: LoginInput!) {
@@ -35,9 +36,12 @@ export const Login = () => {
     const onCompleted = (data: loginMutation) => {
         const { login: { ok, error, token } } = data;
 
-        if (ok) {
-            console.log(token);
+        if (ok && token) {
+
+            localStorage.setItem(LOCALSTORAGE_TOKEN, token);
+            authToken(token);
             isLoggedInVar(true);
+
         }else {
             if (error) {
                 setAccountsError(error);
