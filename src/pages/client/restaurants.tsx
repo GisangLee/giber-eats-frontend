@@ -8,6 +8,7 @@ import FoodPhoto from "../../images/food_photo.jpg";
 import { Restaurant } from '../../components/restaurant';
 import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
 import { CategoryCompoent } from '../../components/category';
+import { Link } from 'react-router-dom';
 
 
 const RESTAURANTS_QUERY = gql`
@@ -83,11 +84,15 @@ export const Restaurants = () => {
                         { restaurantQueryResult.allCategories.categories.map(category => {
                             if (category.coverImg) {
                                 return (
-                                    <CategoryCompoent id={ category.id + "" } coverImg={ category.coverImg } name={ category.name } slug={ category.slug }/>
+                                    <Link key={ category.id } to={ `/category/${ category.slug }`}>
+                                        <CategoryCompoent key={ category.id } id={ category.id + "" } coverImg={ category.coverImg } name={ category.name } />
+                                    </Link>
                                 );
                             }else {
                                 return (
-                                    <CategoryCompoent id={ category.id + "" } name={ category.name } slug={ category.slug } />
+                                    <Link key={ category.id } to={ `/category/${ category.slug }`}>
+                                        <CategoryCompoent key={ category.id } id={ category.id + "" } name={ category.name } />
+                                    </Link>
                                 );
                             }
                         })}
@@ -97,11 +102,15 @@ export const Restaurants = () => {
                         { restaurantQueryResult.restaurants.restaurants.map(restaurant => {
                             if(restaurant.category) {
                                 return (
-                                    <Restaurant key={ restaurant.id } coverImg={ restaurant.coverImg } id={ restaurant.id + "" } name={ restaurant.name } categoryName={ restaurant.category.name }/>
+                                    <Link key={ restaurant.id } to={ `/restaurant/${ restaurant.id }` }>
+                                        <Restaurant coverImg={ restaurant.coverImg } id={ restaurant.id + "" } name={ restaurant.name } categoryName={ restaurant.category.name }/>
+                                    </Link>
                                 );
                             }else if (!restaurant.category) {
                                 return (
-                                    <Restaurant key={ restaurant.id } coverImg={ restaurant.coverImg } id={ restaurant.id + "" } name={ restaurant.name }/>
+                                    <Link key={ restaurant.id } to={ `/restaurant/${ restaurant.id }` }>
+                                        <Restaurant coverImg={ restaurant.coverImg } id={ restaurant.id + "" } name={ restaurant.name }/>
+                                    </Link>
                                 );
                             }
                         })}

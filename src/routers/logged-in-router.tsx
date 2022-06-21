@@ -8,6 +8,8 @@ import { ConfirmEmail } from '../pages/user/confirm-email';
 import { EditProfile } from '../pages/user/edit-profile';
 import { Search } from '../pages/client/search';
 import { Category } from '../pages/client/category';
+import { Restaurant } from '../components/restaurant';
+import { RestaurantDetail } from '../pages/client/restaurant';
 
 
 const ClientRoutes = [
@@ -15,7 +17,8 @@ const ClientRoutes = [
     <Route key={2}  path='/confirm' element={ <ConfirmEmail /> }></Route>,
     <Route key={3}  path='/edit-profile' element={ <EditProfile /> }></Route>,
     <Route key={4}  path='/search' element={ <Search /> }></Route>,
-    <Route key={5}  path='/category/:slug' element={ <Category /> }></Route>
+    <Route key={5}  path='/category/:slug' element={ <Category /> }></Route>,
+    <Route key={5}  path='/restaurant/:id' element={ <RestaurantDetail /> }></Route>
 ]
 
 export const LoggedInRouter = () => {
