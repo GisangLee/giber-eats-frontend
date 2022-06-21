@@ -1,8 +1,14 @@
 import { gql, useQuery } from '@apollo/client';
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { restaurantsPageQuery, restaurantsPageQueryVariables } from '../../__generated__/restaurantsPageQuery';
 import FoodPhoto from "../../images/food_photo.jpg";
 import { Restaurant } from '../../components/restaurant';
+import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
+import { CategoryCompoent } from '../../components/category';
+
 
 const RESTAURANTS_QUERY = gql`
     query restaurantsPageQuery($input: RestaurantsIput!) {
@@ -10,11 +16,7 @@ const RESTAURANTS_QUERY = gql`
             ok
             error
             categories {
-                id
-                name
-                coverImg
-                slug
-                restaurantCount
+                ...categoryParts
             }
         }
 
@@ -24,25 +26,23 @@ const RESTAURANTS_QUERY = gql`
             totalPages
             totalResults
             restaurants {
-                id
-                name
-                address
-                isPromoted
-                coverImg
-                category {
-                    id
-                    name
-                    slug
-                }
+                ...restaurantParts
             }
         }
     }
+    ${RESTAURANT_FRAGMENT}
+    ${CATEGORY_FRAGMENT}
 `;
 
+interface IFormProps {
+    searchTerm: string;
+};
 
 export const Restaurants = () => {
 
     const [page, setPage] = useState(1);
+
+    const navigate = useNavigate();
 
     const { data: restaurantQueryResult, loading, error } = useQuery<restaurantsPageQuery, restaurantsPageQueryVariables>(RESTAURANTS_QUERY, {
         variables: {
@@ -56,33 +56,52 @@ export const Restaurants = () => {
 
     const onPrevPageClick = () => setPage(current => current - 1);
 
+    const { register, handleSubmit, getValues } = useForm<IFormProps>();
+
+    const onSearchSubmit = () => {
+        const { searchTerm } = getValues();
+
+        navigate({
+            pathname: "/search",
+            search: `?term=${searchTerm}` 
+        })
+    };
+
 
     return (
-        <div>
-            <form className="bg-gray-800 w-full py-40 flex items-center justify-center">
-                <input type="Search" placeholder='검색' className='input w-3/12 rounded-md border-0'/>
+        <div>   
+            <Helmet>
+                <title>Home | Giber Eats</title>
+            </Helmet>
+            <form className="bg-gray-800 bg-cover bg-no-repeat bg-center w-full py-40 flex items-center justify-center" onSubmit={ handleSubmit(onSearchSubmit) } style={{ backgroundImage: `url(${FoodPhoto})`}}>
+                <input {...register("searchTerm", { required: true })} type="Search" placeholder='검색' className='input w-3/4 md:w-3/12 rounded-md border-0'/>
             </form>
 
             { !loading && restaurantQueryResult && restaurantQueryResult.allCategories.categories && restaurantQueryResult.restaurants.restaurants && (
                 <div className='max-w-screen-2xl mx-auto mt-8 pb-20'>
                     <div className='flex justify-around max-w-screen-xs mx-auto'>
-                        { restaurantQueryResult.allCategories.categories.map(category => (
-                            <div className='flex flex-col group items-center cursor-pointer' key={category.id}>
-                                <div className='w-10 h-10 rounded-full bg-cover group-hover:bg-gray-100' style={{ backgroundImage: `url(${category.coverImg})`}}></div>
-                                <span className='mt-1 text-sm text-center text-medium'>{category.name}</span>
-                            </div>
-                        ))}
+                        { restaurantQueryResult.allCategories.categories.map(category => {
+                            if (category.coverImg) {
+                                return (
+                                    <CategoryCompoent id={ category.id + "" } coverImg={ category.coverImg } name={ category.name } slug={ category.slug }/>
+                                );
+                            }else {
+                                return (
+                                    <CategoryCompoent id={ category.id + "" } name={ category.name } slug={ category.slug } />
+                                );
+                            }
+                        })}
                     </div>
 
-                    <div className='grid grid-cols-3 gap-x-5 gap-y-7 mt-16'>
+                    <div className='grid md:grid-cols-3 gap-x-5 gap-y-7 mt-16'>
                         { restaurantQueryResult.restaurants.restaurants.map(restaurant => {
                             if(restaurant.category) {
                                 return (
-                                    <Restaurant coverImg={ restaurant.coverImg } id={ restaurant.id + "" } name={ restaurant.name } categoryName={ restaurant.category.name }/>
+                                    <Restaurant key={ restaurant.id } coverImg={ restaurant.coverImg } id={ restaurant.id + "" } name={ restaurant.name } categoryName={ restaurant.category.name }/>
                                 );
                             }else if (!restaurant.category) {
                                 return (
-                                    <Restaurant coverImg={ restaurant.coverImg } id={ restaurant.id + "" } name={ restaurant.name }/>
+                                    <Restaurant key={ restaurant.id } coverImg={ restaurant.coverImg } id={ restaurant.id + "" } name={ restaurant.name }/>
                                 );
                             }
                         })}

@@ -660,8 +660,8 @@ video {
   width: 15rem;
 }
 
-.w-3\/12 {
-  width: 25%;
+.w-3\/4 {
+  width: 75%;
 }
 
 .w-10 {
@@ -919,6 +919,16 @@ video {
 .group:hover .group-hover\:bg-gray-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+
+@media (min-width: 768px) {
+  .md\:w-3\/12 {
+    width: 25%;
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 1024px) {

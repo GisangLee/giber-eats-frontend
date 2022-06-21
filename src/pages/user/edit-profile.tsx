@@ -4,7 +4,7 @@ import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { Button } from '../../components/button';
 import { useMe } from '../../hooks/useMe';
 import { editProfile, editProfileVariables } from '../../__generated__/editProfile';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const EDIT_PROFILE_MUTATION = gql`
     mutation editProfile($input: EditProfileInput!){

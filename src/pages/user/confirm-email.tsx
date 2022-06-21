@@ -4,7 +4,7 @@ import { verifyEmail, verifyEmailVariables } from '../../__generated__/verifyEma
 import { useQueryParam } from '../../hooks/useQueryParam';
 import { useMe } from '../../hooks/useMe';
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 
 const VERIFY_EMAIL_MUTATION = gql`
