@@ -8,7 +8,10 @@ module.exports = {
     extend: {
       color: {
         lime: color.lime,
-      }
+      },
+      backgroundImage: {
+        "food": "url('/public/images/food_photo.jpg')",
+      },
     },
   },
   plugins: [],

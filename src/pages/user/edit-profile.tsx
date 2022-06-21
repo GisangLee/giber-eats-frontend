@@ -4,6 +4,7 @@ import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { Button } from '../../components/button';
 import { useMe } from '../../hooks/useMe';
 import { editProfile, editProfileVariables } from '../../__generated__/editProfile';
+import { Helmet } from 'react-helmet';
 
 const EDIT_PROFILE_MUTATION = gql`
     mutation editProfile($input: EditProfileInput!){
@@ -93,6 +94,9 @@ export const EditProfile = () => {
 
     return (
         <div className=' mt-52 flex flex-col justify-center items-center'>
+            <Helmet>
+                <title>프로필 수정 | Giber Eats</title>
+            </Helmet>
             <h4 className='font-semibold text-2xl mb-3'>프로필 수정</h4>
             <form action="" onSubmit={ handleSubmit(onSubmit) } className='grid grid-gap-3 max-w-screen-sm mt-5 w-full mb-5'>
                 <input { ...register("email", { pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ }) } name="email" className='input' type="email" placeholder='이메일'/>

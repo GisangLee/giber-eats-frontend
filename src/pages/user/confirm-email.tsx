@@ -4,6 +4,7 @@ import { verifyEmail, verifyEmailVariables } from '../../__generated__/verifyEma
 import { useQueryParam } from '../../hooks/useQueryParam';
 import { useMe } from '../../hooks/useMe';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 
 const VERIFY_EMAIL_MUTATION = gql`
@@ -64,6 +65,9 @@ export const ConfirmEmail = () => {
 
     return (
         <div className='mt-52 flex flex-col items-center justify-center'>
+            <Helmet>
+                <title>계정 인증 | Giber Eats</title>
+            </Helmet>
             <h2 className='text-lg mb-3 font-medium'>인증 중입니다....</h2>
             <h4 className='text-gray-700 text-sm'>창을 닫지말고 완료될 때까지 기다려 주세요.</h4>
         </div>
