@@ -9,8 +9,7 @@ import { LOCALSTORAGE_TOKEN } from "./constants";
 
   const tokenFromLocalStorage = localStorage.getItem(LOCALSTORAGE_TOKEN);
   export const isLoggedInVar = makeVar(Boolean(tokenFromLocalStorage));
-
-  export const authToken = makeVar(tokenFromLocalStorage);
+  export const authToken  = makeVar(tokenFromLocalStorage);
 
   const httpLink = createHttpLink({
     uri: 'http://localhost:4000/graphql'
