@@ -8,7 +8,6 @@ import { ConfirmEmail } from '../pages/user/confirm-email';
 import { EditProfile } from '../pages/user/edit-profile';
 import { Search } from '../pages/client/search';
 import { Category } from '../pages/client/category';
-import { Restaurant } from '../components/restaurant';
 import { RestaurantDetail } from '../pages/client/restaurant';
 
 
