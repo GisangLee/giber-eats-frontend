@@ -183,4 +183,8 @@ describe("<Login/>", () => {
 
         getByText("mutation error");
     });
+
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
 }); 
