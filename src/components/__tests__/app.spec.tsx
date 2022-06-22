@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, waitFor } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { App } from '../app';
 import { isLoggedInVar } from '../../apollo';
 
