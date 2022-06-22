@@ -1,16 +1,34 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 import { App } from '../app';
+import { isLoggedInVar } from '../../apollo';
 
 jest.mock("../../routers/logged-out-router", () => {
     return {
-        LoggedoutRouter: () => <span>로그아웃</span>
+        LoggedoutRouter: () => <span>logged-out</span>,
+    };
+});
+
+jest.mock("../../routers/logged-in-router", () => {
+    return {
+        LoggedInRouter: () => <span>logged-in</span>,
     };
 });
 
 describe("<App/>", () => {
-    it("renders OK", () => {
-        const { debug, getByAltText } = render(<App/>);
-        getByAltText("로그아웃");
+    it("renders logged out router", () => {
+        const { getByText } = render(<App/>);
+        getByText("logged-out");
     });
+
+    it("renders logged in router", async () => {
+        const { getByText } = render(<App/>);
+
+        await act(() => {
+            isLoggedInVar(true);
+        });
+
+        getByText("logged-in");
+    });
+
 });
