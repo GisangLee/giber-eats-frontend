@@ -8,7 +8,6 @@ import giberLogo from "../images/logo.svg";
 import { Button } from '../components/button';
 import { UserRole } from '../__generated__/globalTypes';
 import { createAccountMutation, createAccountMutationVariables } from '../__generated__/createAccountMutation';
-import { extendSchemaImpl } from 'graphql/utilities/extendSchema';
 
 const CREATE_ACCOUNT_MUTATION = gql`
     mutation createAccountMutation($createAccountInput: CreateAccountInput!) {
