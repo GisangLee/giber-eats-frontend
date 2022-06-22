@@ -1,5 +1,3 @@
-import { createVerify } from "crypto";
-import { isTypedArray } from "util/types";
 
 describe("Log In", () => {
   const user = cy;
@@ -43,9 +41,5 @@ describe("Log In", () => {
     user.window().its("localStorage.giber-token").should("be.a", "string")
 
     //TODO: can log in
-  });
-
-  it("sign up", () => {
-    user.visit("/create-account");
   });
 });
