@@ -1,3 +1,4 @@
+import { use } from "chai";
 
 describe("Log In", () => {
   const user = cy;
@@ -32,14 +33,6 @@ describe("Log In", () => {
   });
 
   it("Log in", () => {
-    user.visit("/");
-    //user.get('[name="email"]').type("test@gmail.com")
-    user.findByPlaceholderText("이메일").type("masterkorea01@naver.com")
-    user.findByPlaceholderText("비밀번호").type("qwe123qwe123")
-    //user.get('[name="password"]').type("qwe12312312312321")
-    user.findByRole("button").should("not.have.class", "pointer-events-none").click()
-    user.window().its("localStorage.giber-token").should("be.a", "string")
-
-    //TODO: can log in
+    user.Login("masterkorea01@naver.com", "qwe123qwe123");
   });
 });

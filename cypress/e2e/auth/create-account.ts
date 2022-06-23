@@ -38,37 +38,7 @@ describe("Create Account", () => {
       })
 
       it("Create Account Success and login ", () => {
-        user.intercept("http://localhost:4000/graphql", (req) => {
-            console.log(req);
-            const { body: { operationName } } = req;
-            if (operationName && operationName === "createAccountMutation"){
-                req.reply((res) => {
-                    res.send({
-                        data: {
-                            createAccount: {
-                                ok: true,
-                                error: null,
-                                __typename: "CreateAccountOutput"
-                            },
-                        },
-                    });
-                });
-            }
-        })
-        user.visit("/create-account")
-        user.findByPlaceholderText("이메일").type("tttppp@gmail.com")
-        user.findByPlaceholderText("비밀번호").type("qwe123qwe123")
-    
-        user.findByRole("button").should("not.have.class", "pointer-events-none").click()
-
-        user.wait(1000)
-        user.title().should("eq", "로그인 | Giber Eats")
-
-        user.findByPlaceholderText("이메일").type("tttppp@gmail.com")
-        user.findByPlaceholderText("비밀번호").type("qwe123qwe123")
-
-        user.findByRole("button").click()
-        user.window().its("localStorage.giber-token").should("be.a", "string")
+        user.SignUp("masterkorea01@naver.com", "qwe123qwe123");
       })
 
   });

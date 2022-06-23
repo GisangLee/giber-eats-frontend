@@ -36,3 +36,57 @@
 //   }
 // }
 import '@testing-library/cypress/add-commands';
+
+Cypress.Commands.add("assertLoggedIn", () => {
+    cy.window().its("localStorage.giber-token").should("be.a", "string");
+});
+
+Cypress.Commands.add("assertLoggedOut", (email, password) => {
+    cy.window().its("localStorage.giber-token").should("not.exist");
+});
+
+Cypress.Commands.add("Login", (email, password) => {
+    cy.assertLoggedOut();
+    cy.visit("/");
+    cy.title().should("eq", "로그인 | Giber Eats");
+    //cy.get('[name="email"]').type("test@gmail.com")
+    cy.findByPlaceholderText("이메일").type(email);
+    cy.findByPlaceholderText("비밀번호").type(password);
+    //cy.get('[name="password"]').type("qwe12312312312321")
+    cy.findByRole("button").should("not.have.class", "pointer-events-none").click();
+    cy.assertLoggedIn();
+});
+
+Cypress.Commands.add("SignUp", (email, password) => {
+    cy.intercept("http://localhost:4000/graphql", (req) => {
+        console.log(req);
+        const { body: { operationName } } = req;
+        if (operationName && operationName === "createAccountMutation"){
+            req.reply((res) => {
+                res.send({
+                    data: {
+                        createAccount: {
+                            ok: true,
+                            error: null,
+                            __typename: "CreateAccountOutput"
+                        },
+                    },
+                });
+            });
+        }
+    });
+    cy.visit("/create-account")
+    cy.findByPlaceholderText("이메일").type(email);
+    cy.findByPlaceholderText("비밀번호").type(password);
+
+    cy.findByRole("button").should("not.have.class", "pointer-events-none").click();
+
+    cy.wait(1000)
+    cy.title().should("eq", "로그인 | Giber Eats");
+
+    cy.findByPlaceholderText("이메일").type(email);
+    cy.findByPlaceholderText("비밀번호").type(password);
+
+    cy.findByRole("button").click()
+    cy.assertLoggedIn();
+});
