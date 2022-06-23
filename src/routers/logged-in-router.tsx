@@ -9,16 +9,45 @@ import { EditProfile } from '../pages/user/edit-profile';
 import { Search } from '../pages/client/search';
 import { Category } from '../pages/client/category';
 import { RestaurantDetail } from '../pages/client/restaurant';
+import { MyRestaurants } from '../pages/owner/restaurants';
 
+const clientRoutes = [
+    {
+        path: "/",
+        component: <Restaurants/>,
+    },
+    {
+        path: "/search",
+        component: <Search/>,
+    },
+    {
+        path: "/category/:slug",
+        component: <Category/>,
+    },
+    {
+        path: "/restaurant/:id",
+        component: <RestaurantDetail/>,
+    },
+];
 
-const ClientRoutes = [
-    <Route key={1}  path='/' element={ <Restaurants /> }></Route>,
-    <Route key={2}  path='/confirm' element={ <ConfirmEmail /> }></Route>,
-    <Route key={3}  path='/edit-profile' element={ <EditProfile /> }></Route>,
-    <Route key={4}  path='/search' element={ <Search /> }></Route>,
-    <Route key={5}  path='/category/:slug' element={ <Category /> }></Route>,
-    <Route key={5}  path='/restaurant/:id' element={ <RestaurantDetail /> }></Route>
-]
+const ownerRoutes = [
+    {
+        path: "/",
+        component: <MyRestaurants/>,
+    },
+];
+
+const commonRoutes = [
+    {
+        path: "/confirm",
+        component: <ConfirmEmail/>,
+    },
+    {
+        path: "/edit-profile",
+        component: <EditProfile/>,
+    },
+];
+
 
 export const LoggedInRouter = () => {
     const {data: meQueryResult, loading, error } = useMe();
@@ -35,7 +64,9 @@ export const LoggedInRouter = () => {
         <BrowserRouter>
             <Header/>
             <Routes>
-                { meQueryResult.me.role === "Client" ? ClientRoutes : ""}
+                { commonRoutes.map((route, index) => <Route key={ index } path={ route.path } element={ route.component }></Route>) }
+                { meQueryResult.me.role === "Client" &&  clientRoutes.map((route, index) => <Route key={ index } path={ route.path } element={ route.component }></Route>) }
+                { meQueryResult.me.role === "Owner" &&  ownerRoutes.map((route, index) => <Route key={ index } path={ route.path } element={ route.component }></Route>) }
                 <Route path="*" element={ <NotFound/> }/>
             </Routes>
         </BrowserRouter>
