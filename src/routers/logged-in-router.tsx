@@ -10,6 +10,7 @@ import { Search } from '../pages/client/search';
 import { Category } from '../pages/client/category';
 import { RestaurantDetail } from '../pages/client/restaurant';
 import { MyRestaurants } from '../pages/owner/restaurants';
+import { AddRestaurants } from '../pages/owner/add-restaurants';
 
 const clientRoutes = [
     {
@@ -34,6 +35,10 @@ const ownerRoutes = [
     {
         path: "/",
         component: <MyRestaurants/>,
+    },
+    {
+        path: "/add-restaurant",
+        component: <AddRestaurants/>,
     },
 ];
 

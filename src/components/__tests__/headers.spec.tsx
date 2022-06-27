@@ -6,7 +6,7 @@ import { Header } from '../headers';
 import { gql } from '@apollo/client';
 
 const ME_QUERY = gql`
-    query meQuery {
+    query meQuery_Test {
         me {
             id
             email

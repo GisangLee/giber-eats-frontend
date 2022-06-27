@@ -116,7 +116,7 @@ describe("<CreateAccount/>", () => {
         };
 
         const CREATE_ACCOUNT_MUTATION = gql`
-            mutation createAccountMutation($createAccountInput: CreateAccountInput!) {
+            mutation createAccountMutation_Test_Test($createAccountInput: CreateAccountInput!) {
                 createAccount(input: $createAccountInput) {
                     ok
                     error
@@ -166,7 +166,7 @@ describe("<CreateAccount/>", () => {
         };
 
         const CREATE_ACCOUNT_MUTATION = gql`
-            mutation createAccountMutation($createAccountInput: CreateAccountInput!) {
+            mutation createAccountMutation_Test($createAccountInput: CreateAccountInput!) {
                 createAccount(input: $createAccountInput) {
                     ok
                     error

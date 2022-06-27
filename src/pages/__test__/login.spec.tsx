@@ -96,7 +96,7 @@ describe("<Login/>", () => {
         };
         
         const LOGIN_MUTATION = gql`
-            mutation loginMutation($loginInput: LoginInput!) {
+            mutation loginMutation_Test($loginInput: LoginInput!) {
                 login(input: $loginInput){
                     ok
                     error
@@ -146,7 +146,7 @@ describe("<Login/>", () => {
         };
         
         const LOGIN_MUTATION = gql`
-            mutation loginMutation($loginInput: LoginInput!) {
+            mutation loginMutation_Test_Test($loginInput: LoginInput!) {
                 login(input: $loginInput){
                     ok
                     error
