@@ -49,7 +49,7 @@ export const MyRestaurant = () => {
                             <Helmet>
                                 <title>내 가게 모두 보기| Giber Eats</title>
                             </Helmet>
-                            <div className='bg-gray-700 py-28 bg-center bg-cover' style={{ backgroundImage: `url(${myRestaurantQueryResult.myRestaurant.restaurant.coverImg})`}}></div>
+                            <div className='bg-gray-700 py-28 bg-center bg-cover' style={ { backgroundImage: `url(${myRestaurantQueryResult.myRestaurant.restaurant.coverImg})` } }></div>
                             <div className='container mt-10'>
                                 <h2 className='text-4xl font-medium mb-10'>
                                     { myRestaurantQueryResult.myRestaurant.restaurant.name || "Loading... " }
